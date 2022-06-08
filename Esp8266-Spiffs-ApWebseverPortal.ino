@@ -1,5 +1,7 @@
 /* 
-    modified by fryakatkop nov2015
+   Modified by jw jun2022, changed SPIFFS into LittleFS
+   
+   modified by fryakatkop nov2015
 
 
   FSWebServer - Example WebServer with SPIFFS backend for esp8266
@@ -31,6 +33,7 @@
 #include <ESP8266mDNS.h>
 #include <DNSServer.h>
 #include <FS.h>
+#include <LittleFS.h>
 
 #define DBG_OUTPUT_PORT Serial
 
@@ -38,7 +41,7 @@ const char *ssid = "ESP-test";
 const char *password = "";
 
 /* hostname for mDNS. Should work at least on windows. Try http://esp8266.local */
-const char *myHostname = "esp8266";
+const char *myHostname = "esp82661111111111";
 
 const char *metaRefreshStr = "<head><meta http-equiv=\"refresh\" content=\"3; url=http://192.168.4.1/index.html\" /></head><body><p>redirecting...</p></body>";
 
@@ -100,10 +103,10 @@ bool handleFileRead(String path){
   if(path.endsWith("/")) path += "index.html";
   String contentType = getContentType(path);
   String pathWithGz = path + ".gz";
-  if(SPIFFS.exists(pathWithGz) || SPIFFS.exists(path)){
-    if(SPIFFS.exists(pathWithGz))
+  if(LittleFS.exists(pathWithGz) || LittleFS.exists(path)){
+    if(LittleFS.exists(pathWithGz))
       path += ".gz";
-    File file = SPIFFS.open(path, "r");
+    File file = LittleFS.open(path, "r");
     size_t sent = server.streamFile(file, contentType);
     file.close();
     return true;
@@ -116,7 +119,7 @@ void handleFileList() {
   
   String path = server.arg("dir");
   DBG_OUTPUT_PORT.println("handleFileList: " + path);
-  Dir dir = SPIFFS.openDir(path);
+  Dir dir = LittleFS.openDir(path);
   path = String();
 
   String output = "[";
@@ -176,9 +179,9 @@ void setup(void){
   DBG_OUTPUT_PORT.begin(115200);
   DBG_OUTPUT_PORT.print("\n");
   DBG_OUTPUT_PORT.setDebugOutput(true);
-  SPIFFS.begin();
+  LittleFS.begin();
   {
-    Dir dir = SPIFFS.openDir("/");
+    Dir dir = LittleFS.openDir("/");
     while (dir.next()) {    
       String fileName = dir.fileName();
       size_t fileSize = dir.fileSize();
