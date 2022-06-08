@@ -1,4 +1,8 @@
-# Esp8266-Spiffs-ApWebseverPortal
-Small Esp8266-Arduino Spiffs Access Point Webserver w/ Captive Portal for http 
+# Esp8266-LittleFS-ApWebseverPortal
+Small Esp8266-Arduino LittleFS Access Point Webserver w/ Captive Portal for http 
 
-Upload data folder before sketch
+Please use "LittleFS Data Uploader" to upload the "data" before sketch
+
+
+This is a good sample for people who would like to know the ESP8266 Captive
+
